@@ -1,0 +1,16 @@
+.app {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+}
+
+#bookingPortal {
+  position: fixed;
+  right: 50px;
+  top: 100px;
+  z-index: 1;
+}
+
+#photoDisplay {
+  margin-top: 80px;
+}
