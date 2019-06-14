@@ -1,8 +1,10 @@
+require('newrelic');
+const request = require('request');
 const url = require('url');
 const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const path = require('path');
 const port = process.env.PORT || 3000;
 
 const app = express();
@@ -54,5 +56,19 @@ app.get('/messages', (req, res) => {
 app.post('/booking', (req, res) => {
   res.redirect(307, 'http://localhost:3003/booking');
 });
-
+app.get('/listinginfo/:id', (req, res) => {
+  console.log('proxy get');
+  request(`http://localhost:3004/listinginfo/${req.params.id}`, function (error, response, body) {
+    if (error) {
+      res.status(500).end();
+    } else {
+      res.status(200);
+      res.send(response);
+    }
+  });
+})
+app.get('/listinginfo1/*', (req, res) => {
+  console.log('here we are good sir');
+  res.sendFile(path.join(__dirname, '..', '/public', 'index.html'));
+})
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
