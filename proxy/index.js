@@ -4,7 +4,7 @@ const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-var request = require('request');
+const request = require('request');
 
 const port = process.env.PORT || 3000;
 
@@ -66,30 +66,25 @@ app.get('/listings/*', (req, res) => {
 
 app.get('/photos/get/:listingId', (req, res) => {
   const { listingId } = req.params;
-  res.redirect(url.format({
-    protocol: 'http',
-    hostname: 'localhost',
-    port: 4000,
-    pathname: `/photos/get/${listingId}`,
-    query: req.query,
-  }));
+
+  request.get( {url: `http://localhost:4000/photos/get/${listingId}`}, (err, response, body) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      // const data = JSON.parse(response.body).rows;
+      res.status(200).send(body);
+    }
+  });
 });
 
 app.post('/photos/post', (req, res) => {
-  const {
-    photoUrl, description, isVerified, listingId,
-  } = req.body;
-  const entry = {
-    photoUrl, description, isVerified, listingId,
-  };
-
-  res.redirect(url.format({
-    protocol: 'http',
-    hostname: 'localhost',
-    port: 4000,
-    pathname: '/photos/post',
-    query: req.query,
-  }));
+  request.post( {url: 'http://localhost:4000/photos/post', form: req.body}, (err) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.status(200).send();
+    }
+  });
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
