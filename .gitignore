@@ -2,3 +2,5 @@ node_modules
 public/bundle.js
 public/path~vendor.bundle.js
 services/*
+newrelic.js
+newrelic_agent.log
