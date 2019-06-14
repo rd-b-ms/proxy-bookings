@@ -1,4 +1,12 @@
+# dependencies
 node_modules
+package-lock.json
+
+# Components
+services/*
 public/bundle.js
 public/path~vendor.bundle.js
-services/*
+
+# testing
+newrelic.js
+newrelic_agent.log
