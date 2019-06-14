@@ -1,8 +1,10 @@
+require('newrelic');
 const url = require('url');
 const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+var request = require('request');
 
 const port = process.env.PORT || 3000;
 
@@ -69,6 +71,23 @@ app.get('/photos/get/:listingId', (req, res) => {
     hostname: 'localhost',
     port: 4000,
     pathname: `/photos/get/${listingId}`,
+    query: req.query,
+  }));
+});
+
+app.post('/photos/post', (req, res) => {
+  const {
+    photoUrl, description, isVerified, listingId,
+  } = req.body;
+  const entry = {
+    photoUrl, description, isVerified, listingId,
+  };
+
+  res.redirect(url.format({
+    protocol: 'http',
+    hostname: 'localhost',
+    port: 4000,
+    pathname: '/photos/post',
     query: req.query,
   }));
 });
