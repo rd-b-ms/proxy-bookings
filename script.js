@@ -5,13 +5,13 @@ import { check, sleep } from 'k6';
 // Uncomment following block to run GET request stress testing
 
 export const options = {
-  // vus: 200,
+  vus: 200,
   // duration: '300s',
   stages: [
     { duration: '20s', target: 250 },
     { duration: '40s', target: 500 },
     { duration: '60s', target: 750 },
-    { duration: '320s', target: 1000 },
+    { duration: '420s', target: 1000 },
     { duration: '20s', target: 750 },
     { duration: '20s', target: 500 },
     { duration: '20s', target: 250 },
@@ -33,13 +33,13 @@ export default function () {
 // Uncomment following block to run POST request stress testing
 
 export const options = {
-  // vus: 1000,
+  vus: 200,
   // duration: '600s',
   stages: [
     { duration: '20s', target: 250 },
     { duration: '40s', target: 500 },
     { duration: '60s', target: 750 },
-    { duration: '320s', target: 1000 },
+    { duration: '420s', target: 1000 },
     { duration: '20s', target: 750 },
     { duration: '20s', target: 500 },
     { duration: '20s', target: 250 },
@@ -47,7 +47,7 @@ export const options = {
 };
 
 export default function () {
-  const url = 'http://localhost:4000/photos/post';
+  const url = 'http://localhost:3000/photos/post';
   const payload = JSON.stringify({
     photoUrl: `https://sdc-photos-rdbms.s3-us-west-1.amazonaws.com/${Math.floor(Math.random() * 80000000)}.jpeg`,
     description: 'This photo is of my cat. She is the best cat you have ever seen',
