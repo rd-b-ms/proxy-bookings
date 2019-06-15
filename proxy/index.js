@@ -57,13 +57,12 @@ app.post('/booking', (req, res) => {
   res.redirect(307, 'http://localhost:3003/booking');
 });
 app.get('/listinginfo/:id', (req, res) => {
-  console.log('proxy get');
   request(`http://localhost:3004/listinginfo/${req.params.id}`, function (error, response, body) {
     if (error) {
       res.status(500).end();
     } else {
       res.status(200);
-      res.send(response);
+      res.send(response.body);
     }
   });
 })
