@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon ./proxy/index.js",
     "deploy": "node ./proxy/index.js",
-    "build": "webpack --mode development --watch"
+    "build": "webpack --mode development --watch",
+    "build-deploy": "webpack -p"
   },
   "keywords": [],
   "author": "",
