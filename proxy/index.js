@@ -67,7 +67,7 @@ app.get('/listings/*', (req, res) => {
 app.get('/photos/get/:listingId', (req, res) => {
   const { listingId } = req.params;
 
-  request.get( {url: `http://localhost:4000/photos/get/${listingId}`}, (err, response, body) => {
+  request.get( {url: `http://18.224.171.203:4000/photos/get/${listingId}`}, (err, response, body) => {
     if (err) {
       res.status(500).send(err);
     } else {
