@@ -4,3 +4,4 @@ public/path~vendor.bundle.js
 services/*
 newrelickey.js
 newrelic_agent.log
+dump.rdb

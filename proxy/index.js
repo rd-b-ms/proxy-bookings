@@ -5,8 +5,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const request = require('request');
-
+const redis = require('redis');
 const port = process.env.PORT || 80;
+const clientRedis = redis.createClient();
+clientRedis.on("error", function (err) {
+  console.log("Error " + err);
+});
 
 const app = express();
 
@@ -49,23 +53,46 @@ app.get('/listinginfo', (req, res) => {
 });
 
 app.get('/messages/:id', function proxyGet(req, res) {
-  request.get(`http://127.0.0.1:3001/messages/${req.params.id}`, function serviceRes(err, httpRes, body) {
+  clientRedis.get(req.params.id, (err, reply) => {
     if (err) {
-      res.status(500).send(err);
+      res.status(500).end();
       return;
+    } else if (reply) {
+      res.status(200).send(reply);
+    } else {
+      request.get(`http://18.216.189.181/messages/${req.params.id}`, function serviceRes(err, httpRes, body) {
+        if (err) {
+          res.status(500).send(err);
+          return;
+        }
+          res.status(200).send(body);
+          clientRedis.set(req.params.id, JSON.stringify(body), (err, reply) => {
+            if (err) {
+              console.log(err);
+              return;
+            }
+            console.log(reply);
+          });
+      });
     }
-      res.status(200).send(body)
-  });
+  })
   // request(`http://localhost:3001/messages/${req.params.id}`).pipe(res);
 });
 
 app.post('/messages', function proxyPost(req, res) {
-  request.post({url: `http://127.0.0.1:3001/messages`, body: req.body, json: true}, function serviceRes(err, httpRes, body) {
+  request.post({url: `http://18.216.189.181/messages`, body: req.body, json: true}, function serviceRes(err, httpRes, body) {
     if (err){
       res.status(500).send(err);
       return;
     }
-    res.status(201).send(body);
+    res.status(201).send('Success!');
+    clientRedis.set(body.listing_id, JSON.stringify(body.results), (err, result) => {
+      if (err){
+        console.log(err);
+        return;
+      }
+      console.log(result);
+    });
   });
 });
 
